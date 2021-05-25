@@ -1,0 +1,20 @@
+body {
+    background-color: lightgreen;
+  }
+  .link-container {
+    padding: 20px;
+    margin-top: 30px;
+    text-align: center;
+   
+  }
+  .link-container a {
+    border: 4px dashed yellow;
+    border-radius: 60%;
+    padding: 30px;
+    font-size: 40px;
+    color: black;
+   
+  }
+  .link-container a:first-child {
+    margin-right: 40px;
+  }

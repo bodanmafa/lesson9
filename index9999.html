@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> The Star Wars</title>
+  <label for="charName">Type name...</label>
+  <link rel="stylesheet" type="text/css" href="style9.css">
+</head>
+<body> 
+  <form id="MenForm">
+    <input type="text" placeholder="Search charapter" id="peopleName">
+  </form>
+  <div class="card-container"></div>
+  <div class="link-container">
+    <a href="#" id="previous">Previous</a>
+    <a href="#" id="next">Next</a>
+  </div>
+  <script>
+    let allMens = [];
+
+    const $card_container = document.querySelector('.card-container');
+    const $previous = document.getElementById('previous');
+    const $next = document.getElementById('next');
+
+    const createMen = (men) => {
+        const $div = document.createElement('div');
+        $div.classList.add('card');
+        $div.dataset.id = men.id;
+
+        const $heading = document.createElement('h2');
+        $heading.classList.add('name');
+        $heading.textContent = men.name;
+
+        $div.append($heading);
+        console.log($div)
+
+        return $div;
+    }
+
+    const addMen = (array) => {
+      array.forEach(menObject => {
+        const $menDiv = createMen(menObject)
+        $card_container.append( $menDiv )
+      })
+    }
+
+    const getMen = (url) => {
+      const request = fetch(url, {
+        method: 'GET'
+      });
+      request
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+          if (res.next) {
+            $next.hidden = false;
+            $next.href = res.next
+          } else {
+            $next.hidden = true;
+          }
+          if (res.previous) {
+            $previous.hidden = false;
+            $previous.href = res.previous;
+          } else {
+            $previous.hidden = true;
+          }
+
+          const mens = res.results;
+          allMens = res.results;
+          console.log(mens);
+
+          addMen(mens)
+        })
+    }
+    getMen('https://swapi.dev/api/people');
+
+    const getOtherMens = (e) => {
+      e.preventDefault();
+
+      $card_container.innerHTML = '';
+      getMen(event.target.href);
+    }
+    $next.addEventListener('click', getOtherMens);
+    $previous.addEventListener('click', getOtherMens);
+  </script>
+</body>
+</html>
+
